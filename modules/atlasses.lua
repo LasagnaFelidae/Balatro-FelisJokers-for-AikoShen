@@ -4,6 +4,7 @@ SMODS.Atlas {
     px = 71,
     py = 95
 }
+--[[
 SMODS.Atlas {
     key = "blindPlacehold",
     path = "blind.png",
@@ -12,6 +13,7 @@ SMODS.Atlas {
 	atlas_table = 'ANIMATION_ATLAS',
 	frames = 1,
 }
+]]
 SMODS.Atlas {
     key = "feliJoker",
     path = "feli.png",
