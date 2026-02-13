@@ -143,8 +143,6 @@ SMODS.Sticker{
 	apply = function(self,card,val)
 		if canApplySigil(card, self.key) then
 			card.ability[self.key] = val
-			print("hhhh")
-			print(card.children.center)
 			updatePos(card, self, self.pos.x, self.pos.y)
 			if card.ability.eternal then 
 				card:remove_sticker('eternal') 
