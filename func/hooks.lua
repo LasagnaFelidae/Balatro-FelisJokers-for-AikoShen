@@ -3,8 +3,7 @@
 sendInfoMessage("Hooking Blind:defeat...", "(Feli's Jokeria, courtesy of TOGAPack)")
 local blindkillref = Blind.defeat
 function Blind:defeat(silent)
-	if FELIJO.is_mod_loaded("TOGAPack") then
-		if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Blind:defeat hook.", "TOGAPack") end
+	if FELIJO.is_mod_loaded("TOGAPack") and togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Blind:defeat hook.", "TOGAPack") end
 		blindkillref(self, silent)
 		-- check for blind
 		if not G.GAME.login and self.name == 'bl_toga_login' then G.GAME.login = true end
