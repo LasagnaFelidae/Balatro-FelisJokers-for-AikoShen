@@ -1,5 +1,6 @@
 # Feli's Jokeria
-### Waiter! Waiter! More LetterJokers please!
+### This branch is only here so i can publish my mod on the balatro discord and have testers :) 
+
 ## SIGILS ARE IN TESTING PHASE, THEY **WILL** STACK AND THEY **WILL** HAVE BRITTLE AND TRIFURCATING
 
 

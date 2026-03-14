@@ -1,6 +1,7 @@
 SMODS.Sound({key = "loic_charging", path = "loic_charging.ogg"})
 SMODS.Sound({key = "loic_ready", path = "loic_ready.ogg"})
 SMODS.Sound({key = "loic_shot", path = "loic_shot.ogg"})
+<<<<<<< HEAD
 
 SMODS.Sound({key = "revo_transform", path = "revo_transform.ogg"})
 
@@ -35,3 +36,6 @@ SMODS.Sound({key = "rbx_explosion", path = "rbx_explosion.ogg"})
 SMODS.Sound({key = "rbx_vending_use", path = "rbx_vending_use.ogg"})
 SMODS.Sound({key = "rbx_spawn_use", path = "rbx_spawn_use.ogg"})
 SMODS.Sound({key = "rbx_spawn_add", path = "rbx_spawn_add.ogg"})
+=======
+SMODS.Sound({key = "revo_transform", path = "revo_transform.ogg"})
+>>>>>>> main

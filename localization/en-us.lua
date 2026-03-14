@@ -320,7 +320,21 @@ return {
 				},
 			
 			},
+<<<<<<< HEAD
 			
+=======
+			m_felijo_enh_sup = {
+				name = "Superior",
+				text = {
+					{
+						"Grants {C:attention}card rank{} multiplied by ",
+						"{X:chips,C:white}#1#{} xChips when played.",
+						"{C:inactive,s:0.8}(With a minimum of {X:chips,C:white,s:0.8}1{C:inactive,s:0.8} xChips)"
+					},
+				},
+			
+			},
+>>>>>>> main
 		},
 		Blind = {
 			bl_felijo_ins_trader = {
@@ -767,6 +781,7 @@ return {
 					"{C:chips}+#1#{} Chips, {C:mult}+#2#{} Mult",
 					},
 					{
+<<<<<<< HEAD
 					"{C:green}#3# in #4#{} chance to add a",
 					"tiered {C:tarot}Superior{} copy",
 					"of a playing card to the deck,",
@@ -778,6 +793,11 @@ return {
 					"{X:tarot,C:white}Tier 2{} : {C:green}20%{}",
 					"{X:tarot,C:white}Tier 1{} : {C:green}65%{}",
 					},
+=======
+					"{C:green}#3# in #4#{} chance to add a {C:tarot}Superior{} copy",
+					"of a playing card to the deck,",
+					},
+>>>>>>> main
                 },
             },
 			-- LEGENDARIES
@@ -1249,10 +1269,13 @@ return {
 			felijo_plt_olddata = "OLD_DATA",
 			felijo_trn_goldn = "Gold Nugget",
 			felijo_enh_sup = "Superior",
+<<<<<<< HEAD
 			felijo_ritual = "Ritual",
 			felijo_tier2_tarot = "Tier 2 Tarot",
 			felijo_tier3_tarot = "Tier 3 Tarot",
 			felijo_tier4_tarot = "Tier 4 Tarot",
+=======
+>>>>>>> main
 		},
     },
 }

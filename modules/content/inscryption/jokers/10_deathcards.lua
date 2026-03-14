@@ -3,12 +3,65 @@ local PRONOUNS = { "neutral", "masculine", "feminine", "masculine", "neutral",
   "masculine", "feminine", "neutral", "masculine", "feminine", 
   "neutral", "masculine", "feminine", "neutral", "masculine", "feminine" }
 
+local superior_enhancement = "m_felijo_enh_sup"
 
+<<<<<<< HEAD:modules/content/inscryption/jokers/10_deathcards.lua
 local superior_tiers = {
     {"m_felijo_enh_sup_t4", 1},
     {"m_felijo_enh_sup_t3", 2},
     {"m_felijo_enh_sup_t2", 4},
     {G.superior_enhancement, 13}
+=======
+if FELIJO.is_mod_loaded("RevosVault") and SMODS.Mods["RevosVault"].config and SMODS.Mods["RevosVault"].config.superior_enabled == true then
+	superior_enhancement = "m_crv_superiore"
+else
+	superior_enhancement = "m_felijo_enh_sup"
+end
+
+local function number_to_pip(n)
+    if n == 14 or n == 1 then return "A"
+    elseif n == 13 then return "K"
+    elseif n == 12 then return "Q"
+    elseif n == 11 then return "J"
+    else return tostring(math.floor(n))
+    end
+end
+				
+local function rank_to_chips(n)
+	if n == 14 or n == 1 then return 11
+    elseif n <= 13 and n >= 11 then return 10
+    else return tostring(math.floor(n))
+    end
+end
+				
+SMODS.Joker { -- Common, loose tail
+    atlas = 'inscryptionJokers',
+    pos = { x = 0, y = 1 },
+    pools = {
+	["FelisJokeria"]=true,
+	["Inscryption"] = true,
+	["Tail"] = true,
+	},
+    key = "felijo_ins_tail",
+	pronouns = "any_all",
+    rarity = 1,
+    cost = 2,
+	config = {extra = {mult = 2}},
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge(localize('k_felijo_ins'), HEX('7f1232'), HEX('f2a655'), 1 )
+	end,
+    loc_vars = function(self, info_queue, card)
+		return { vars = {card.ability.extra.mult, colours = { HEX('F0C590'), HEX('351A09') } } }
+    end,
+    calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+			mult = card.ability.extra.mult
+			}
+		end
+    end,
+    blueprint_compat = true,
+>>>>>>> main:modules/content/inscryption/jokers.lua
 }
 
 local function number_to_pip(n)
@@ -394,6 +447,82 @@ SMODS.Joker { -- Rare Evgast
     blueprint_compat = true,
 }
 
+<<<<<<< HEAD:modules/content/inscryption/jokers/10_deathcards.lua
+=======
+SMODS.Joker { -- Rare Ouro
+    atlas = 'inscryptionJokers',
+    pos = { x = 9, y = 0 },
+    pools = {
+		["FelisJokeria"]=true,
+		["Inscryption"] = true, 
+		["Beast"] = true,
+		["Reptile"] = true, 
+	},
+    key = "felijo_ins_ouro",
+    rarity = 3,
+    cost = 4,
+	pronouns = "he_him",
+	config = { extra = { xchips = 1, xmult = 1, gain = 0.2}, sell = {curr = 0, limit = 2} },
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge(localize('k_felijo_ins'), HEX('7f1232'), HEX('f2a655'), 1 )
+	end,
+    loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xchips, card.ability.extra.xmult, card.ability.extra.gain, card.ability.sell.curr, card.ability.sell.limit, colours = { HEX('F0C590'), HEX('351A09') } } } 
+    end,
+    calculate = function(self, card, context)
+		if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            card.ability.sell.curr = card.ability.sell.curr + 1
+            if card.ability.sell.curr == card.ability.sell.limit then
+                local eval = function(card) return not card.REMOVED end
+                juice_card_until(card, eval, true)
+            end
+            return {
+                message = (card.ability.sell.curr < card.ability.sell.limit) and
+                    (card.ability.sell.curr .. '/' .. card.ability.sell.limit) or
+                    localize('k_active_ex'),
+                colour = G.C.FILTER
+            }
+        end
+	
+        if (context.selling_self and (card.ability.sell.curr >= card.ability.sell.limit))  -- sacrifice by sale
+		or (context.joker_type_destroyed and context.card == card) then -- sacrifice by dagger
+			local ouroboros = SMODS.add_card { 
+				key = "j_felijo_ins_ouro", 
+				key_append = "felijo_ouro", 
+				edition = card.edition,
+				no_editon = true,
+				stickers = nil,
+			}
+				
+			ouroboros.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.gain
+			ouroboros.ability.extra.xchips = card.ability.extra.xmult + card.ability.extra.gain
+			ouroboros.states.visible = false
+			
+			G.E_MANAGER:add_event(Event({
+				delay = 0.4,
+				trigger = 'after',
+				func = function()
+					ouroboros:start_materialize()
+					return true
+				end
+			}))
+
+			return ouroboros
+		end
+		
+		if context.joker_main then
+			return {
+				xmult = card.ability.extra.xmult,
+				xchips = card.ability.extra.xchips
+			}
+        end
+	end,
+    blueprint_compat = true,
+	eternal_compat = false,
+}
+
+
+>>>>>>> main:modules/content/inscryption/jokers.lua
 SMODS.Joker{  --rare Mycologists, The
     atlas = 'inscryptionJokers',
     pos = { x = 3, y = 0 },
@@ -498,8 +627,11 @@ SMODS.Joker { -- Rare Revo
 	},
     key = "felijo_ins_revo",
 	pronouns = "he_him",
+<<<<<<< HEAD:modules/content/inscryption/jokers/10_deathcards.lua
 	unlocked = true,
 	discovered = true,
+=======
+>>>>>>> main:modules/content/inscryption/jokers.lua
     rarity = 3,
     cost = 8,
 	config = { extra = { chips = 7, mult = 20, count = 0, max_c = 10, odds = 3 }, tg = {superior = false} },
@@ -509,7 +641,11 @@ SMODS.Joker { -- Rare Revo
 	
     loc_vars = function(self, info_queue, card)
 		local numerator, denumerator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'felijo_ins_revo')
+<<<<<<< HEAD:modules/content/inscryption/jokers/10_deathcards.lua
 		if card.ability.tg and card.ability.tg.superior == true then
+=======
+		if card.ability.tg.superior == true then
+>>>>>>> main:modules/content/inscryption/jokers.lua
 			return { 
 				key = self.key .. "_s", 
 				vars = { 
@@ -539,7 +675,11 @@ SMODS.Joker { -- Rare Revo
     end,
 	
 	set_sprites = function(self, card, front)
+<<<<<<< HEAD:modules/content/inscryption/jokers/10_deathcards.lua
 		if card.ability and card.ability.tg and card.ability.tg.superior == true then
+=======
+		if card.ability and card.ability.tg.superior == true then
+>>>>>>> main:modules/content/inscryption/jokers.lua
 			card.children.center:set_sprite_pos({x = 5, y = 2})
 		end
 	end,
@@ -551,9 +691,13 @@ SMODS.Joker { -- Rare Revo
 				local new_card = FELIJO.copy_card(G.playing_cards[pseudorandom(pseudoseed('felijo_ins_revo'), 1, #G.playing_cards or 1)], nil, G.deck)
 				
 				if card.ability.extra.count >= card.ability.extra.max_c then
+<<<<<<< HEAD:modules/content/inscryption/jokers/10_deathcards.lua
 					local tier = pseudorandom("felijo_ins_revo"..G.GAME.round..G.GAME.pseudorandom.seed)
 					local roll = FELIJO.quick_pool_pick(superior_tiers, tier)
 					new_card:set_ability(roll)
+=======
+					new_card:set_ability(superior_enhancement)
+>>>>>>> main:modules/content/inscryption/jokers.lua
 				else
 					new_card:set_ability("c_base")
 				end

@@ -112,9 +112,22 @@ assert(SMODS.load_file("./modules/content/inscryption/sigils.lua"))()
 assert(SMODS.load_file("./modules/content/inscryption/pelts.lua"))()
 --assert(SMODS.load_file("./modules/content/inscryption/blinds.lua"))()
 assert(SMODS.load_file("./modules/content/inscryption/vouchers.lua"))()
+<<<<<<< HEAD
 assert(SMODS.load_file("./modules/content/inscryption/consumables.lua"))()
 
 
+=======
+
+-- TOGAStuff Content
+assert(SMODS.load_file("./modules/content/crossmod/togastuff.lua"))()
+-- RevosVault Content
+assert(SMODS.load_file("./modules/content/crossmod/revo.lua"))()
+-- AikoShen Letter Content
+assert(SMODS.load_file("./modules/content/crossmod/aikoshen.lua"))()
+assert(SMODS.load_file("./func/garf_dict.lua"))()
+assert(SMODS.load_file("./modules/content/legendaries.lua"))()
+assert(SMODS.load_file("./modules/content/jokers.lua"))()
+>>>>>>> main
 
 
 

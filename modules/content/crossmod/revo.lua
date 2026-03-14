@@ -8,8 +8,13 @@ end
 
 SMODS.Enhancement {
 	key = 'enh_sup',
+<<<<<<< HEAD
 	atlas = 'tieredEnhancements',
 	pos = { x = 0, y = 7 },
+=======
+	atlas = 'inscryptionJokers',
+	pos = { x = 6, y = 1 },
+>>>>>>> main
 	config = { extra = {xchips = 0.33}},
 	discovered = true,
 	unlocked = true,
@@ -29,6 +34,7 @@ SMODS.Enhancement {
 	end,
 	
 	loc_vars = function(self, info_queue, card)
+<<<<<<< HEAD
 		return { vars = { card.ability.extra.xchips*100 } }
 	end,
 
@@ -132,6 +138,9 @@ SMODS.Enhancement {
 	
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xchips*100 } }
+=======
+		return { vars = { card.ability.extra.xchips } }
+>>>>>>> main
 	end,
 
 	calculate = function(self, card, context)

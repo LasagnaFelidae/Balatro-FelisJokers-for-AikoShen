@@ -4,6 +4,10 @@ FELIJO.is_mod_loaded = function(var) -- credit aiko
 end
 
 FELIJO.copy_card = function(card, new_card, area) -- credit somethingcom515
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
     if not card then return nil end
     local area = area or (new_card and new_card.area) or card.area or G.jokers
     local cardwasindeck = new_card and new_card.added_to_deck or nil
@@ -21,6 +25,7 @@ FELIJO.copy_card = function(card, new_card, area) -- credit somethingcom515
 end
 
 
+<<<<<<< HEAD
 -- https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion + Aikoyori (Aikoshen), rainbow function.
 function FELIJO.hsl2rgb(h,s,l,al) 
     local a=s*math.min(l,1-l);
@@ -76,3 +81,5 @@ FELIJO.quick_pool_pick = function(pool, roll)
 		error("pool is nil")
 	end
 end
+=======
+>>>>>>> main
