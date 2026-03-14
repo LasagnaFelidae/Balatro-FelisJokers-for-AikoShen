@@ -18,11 +18,52 @@ SMODS.Atlas {
 }
 
 SMODS.Atlas {
+	key = "otherJokers",
+	path = "jokers.png",
+	px = 71,
+	py = 95,
+}
+
+SMODS.Atlas {
+    key = "c_tarots",
+    path = "tarots.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas {
+    key = "tieredEnhancements",
+    path = "tiered/enhancements.png",
+    px = 71,
+    py = 95
+}
+SMODS.Atlas {
+    key = "t2Tarots",
+    path = "tiered/t2tarots.png",
+    px = 71,
+    py = 95
+}
+SMODS.Atlas {
+    key = "t3Tarots",
+    path = "tiered/t3tarots.png",
+    px = 71,
+    py = 95
+}
+SMODS.Atlas {
+    key = "t4Tarots",
+    path = "tiered/t4tarots.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas {
     key = "aikoJokers",
     path = "crossmod/aikoshen.png",
     px = 71,
     py = 95
 }
+
+
 
 SMODS.Atlas {
     key = "togaJokers",
@@ -63,6 +104,12 @@ SMODS.Atlas({
     px = 71,
     py = 95
 })
+SMODS.Atlas({
+    key = "inscryptionCons",
+    path = "inscryption/consumables.png",
+    px = 71,
+    py = 95
+})
 SMODS.Atlas {
 	key = "stitches",
 	path = "inscryption/stitches.png",
@@ -79,24 +126,26 @@ SMODS.Atlas({
 	py = 95
 })
 
-SMODS.Atlas({
-    key = "sigils_p1",
-    path = "sigils-p1.png",
+----------------
+--   ROBLOX   --
+----------------
+SMODS.Atlas {
+    key = "rbxJokers",
+    path = "rbx/jokers.png",
     px = 71,
-	py = 95
-})
+    py = 95
+}
 
-SMODS.Atlas({
-    key = "sigils_p2",
-    path = "sigils-p2.png",
-    px = 71, 
-	py = 95
-})
+SMODS.Atlas {
+	key = "subspace",
+	path = "rbx/subspace.png",
+	px = 71,
+	py = 95,
+}
 
-SMODS.Atlas({
-    key = "sigils_p3",
-    path = "sigils-p3.png",
-    px = 71, 
-	py = 95
-})
-
+SMODS.Atlas {
+	key = "copied",
+	path = "rbx/copied.png",
+	px = 71,
+	py = 95,
+}
