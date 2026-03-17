@@ -879,7 +879,7 @@ return {
 			felijo_ttm_sgl_midas = {
 				name = "Midas Touch",
 				text = {
-					"Earn {C:money}$#1#{}"
+					"Earn {C:money}$#1#{} when scored"
 				},
 			},
 			felijo_ttm_sgl_cardbearer = {
@@ -1246,6 +1246,7 @@ return {
 					"Combine with a {C:attention}Totem{}",
 					"to apply its effects on",
 					"{C:attention}Avian{} Jokers",
+					"{C:inactive,s:0.6}(Includes \"Birb\" and \"Birb\" Jokers)"
 				},
 			},
 			c_felijo_ttm_hd_canine = {
@@ -1254,6 +1255,7 @@ return {
 					"Combine with a {C:attention}Totem{}",
 					"to apply its effects",
 					"{C:attention}Canine{} Jokers",
+					"{C:inactive,s:0.6}(Includes \"Dog\" and \"Puppy\" Jokers)"
 				},
 			},
 			c_felijo_ttm_hd_feline = {
@@ -1262,6 +1264,7 @@ return {
 					"Combine with a {C:attention}Totem{}",
 					"to apply its effects on",
 					"{C:attention}Feline{} Jokers",
+					"{C:inactive,s:0.6}(Includes \"Cat\" and \"Kitty\" Jokers)"
 				},
 			},
 			c_felijo_ttm_hd_hooved = {
@@ -1302,6 +1305,7 @@ return {
 					"Combine with a {C:attention}Totem{}",
 					"to apply its effects on",
 					"{C:attention}Object{} Jokers",
+					"{C:inactive,s:0.6}(Includes \"Food\" Jokers)"
 				},
 			},
 			c_felijo_ttm_hd_other = {
@@ -1310,6 +1314,7 @@ return {
 					"Combine with a {C:attention}Totem{}",
 					"to apply its effects on",
 					"{C:attention}Other{} Jokers",
+					"{C:inactive,s:0.6}(Includes \"Meme\" Jokers)"
 				},
 			},
 			c_felijo_ttm_hd_human = {
@@ -1318,6 +1323,7 @@ return {
 					"Combine with a {C:attention}Totem{}",
 					"to apply its effects on",
 					"{C:attention}Human{} Jokers",
+					"{C:inactive,s:0.6}(Includes \"Humanoid\" Jokers)"
 				},
 			},
 			c_felijo_ttm_bifurcated = {
@@ -1474,8 +1480,6 @@ return {
 			k_felijo_combine_button = "COMBINE",
 			k_felijo_separate_button = "SEPARATE",
 			k_felijo_switch_button = "SWITCH",
-			
-			
 		},
 		v_dictionary={
             k_felijo_score_add="+#1# Score",

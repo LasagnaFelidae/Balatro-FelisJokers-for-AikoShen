@@ -42,10 +42,10 @@ G.FUNCS.felijo_can_pull = function(e)
     if #G.felijo_totems.cards < G.felijo_totems.config.card_limit then
         e.config.colour = G.C.PURPLE
         e.config.button = "felijo_pull"
-    elseif (#G.felijo_totems.cards < G.felijo_totems.config.card_limit + 3) and card.ability.is_totem_head then
+    elseif (#G.felijo_totems.cards < G.felijo_totems.config.card_limit + 2) and card.ability.is_totem_head then
 		e.config.colour = G.C.PURPLE
         e.config.button = "felijo_pull"
-	end
+	else
         e.config.colour = G.C.UI.BACKGROUND_INACTIVE
         e.config.button = nil
     end

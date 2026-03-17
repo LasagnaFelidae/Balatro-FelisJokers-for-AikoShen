@@ -56,6 +56,7 @@ FELIJO.POOLS.Roblox_Food = SMODS.ObjectType({
 	end,
 })
 
+
 SMODS.ObjectType({
 	key = "Inscryption",
 	default = "j_joker",
