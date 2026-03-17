@@ -1,5 +1,6 @@
 FELIJO.highlighted_head = FELIJO.highlighted_head or nil
 FELIJO.active_totem = FELIJO.active_totem or nil
+FELIJO.totem_text = "NULL"
 
 G.FUNCS.felijo_totem_button = function(e)
 	if G.felijo_totems then
@@ -9,26 +10,26 @@ G.FUNCS.felijo_totem_button = function(e)
 			if highlighted_head then
 				if highlighted_head.ability.tribe ~= card.ability.totem_tribe then
 					-- SWITCH
-					e.config.text = localize("k_felijo_switch_button")
+					FELIJO.totem_text = localize("k_felijo_switch_button")
 					e.config.button = "felijo_combine_totem"
 					e.config.colour = G.C.BLUE
 				else
-					e.config.text = localize("felijo_switch_button")
+					FELIJO.totem_text = localize("felijo_switch_button")
 					e.config.button = nil
 					e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 				end
 			else
-				e.config.text = localize("k_felijo_separate_button")
+				FELIJO.totem_text = localize("k_felijo_separate_button")
 				e.config.button = "felijo_separate_totem"
 				e.config.colour = G.C.RED
 			end
 		else
 			if highlighted_head and FELIJO.active_totem == nil then
-				e.config.text = localize("k_felijo_combine_button")
+				FELIJO.totem_text = localize("k_felijo_combine_button")
 				e.config.button = "felijo_combine_totem"
 				e.config.colour = G.C.BLUE
 			else
-				e.config.text = localize("k_felijo_combine_button")
+				FELIJO.totem_text = localize("k_felijo_combine_button")
 				e.config.button = nil
 				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 			end
@@ -329,5 +330,36 @@ end
 
 
 
+FELIJO.get_totem_head = function(totem)
+    local a = nil -- var to store the found totem
+    for k, v in pairs(FELIJO.tribe_table) do -- <- go through the trible_table and find the matching one
+        if v.key == totem.ability.totem_tribe then
+            a = v.key
+        end
+    end
+    for k, v in pairs(G.P_CENTER_POOLS.felijo_totem_parts) do
+        if v.config.tribe == a and a then
+            return v -- return the center if it matches
+        end
+    end
+end
 
-
+SMODS.DrawStep { -- mostly taken from the seal drawing thing
+    key = 'felijo_totem_head',
+    order = -10, -- so it draws behind the card, higher nums draw above
+    func = function(self, layer)
+        G.totem_heads_shared = G.totem_heads_shared or {} -- create the table to store all sprites 
+        if self.ability and self.ability.totem_tribe and FELIJO.get_totem_head(self) then -- proper checks, self explanatory
+            local totem = FELIJO.get_totem_head(self) -- for easy access
+            if not G.totem_heads_shared[totem.key] then -- if not found in table, create the sprite inside to be able to draw it
+                G.totem_heads_shared[totem.key] = SMODS.create_sprite(0, 0, G.CARD_W, G.CARD_H, totem.atlas, {x = totem.pos.x, y = totem.pos.y+1}) -- sprite // y+1 to get activated sprite pos instead
+                print(totem.pos)
+            end
+            G.totem_heads_shared[totem.key].role.draw_major = self -- taken from seal code so idk much either
+            G.totem_heads_shared[totem.key]:draw_shader('dissolve', nil, nil, nil, self.children.center, nil, nil, nil,-1.5) -- -1.5 controls the height offset here // -1.5 can be changed dynamically if you asign a value for it in each head center and changing the -1.5 here to totem["whatever_value_you_set"]
+            if self.edition then G.totem_heads_shared[totem.key]:draw_shader(SMODS.Edition.obj_table[self.edition.key].shader, nil, self.ARGS.send_to_shader, nil, self.children.center, nil, nil, nil,-1.5) end -- check if an edition exists and apply it on the drawn head
+            
+        end
+    end,
+    conditions = { vortex = false, facing = 'front' },
+}
