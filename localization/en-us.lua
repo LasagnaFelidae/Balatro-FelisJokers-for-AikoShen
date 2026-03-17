@@ -1471,9 +1471,9 @@ return {
             k_felijo_score_mult_append = " Score",
 			k_felijo_bscore_mult_pre = "x",
             k_felijo_bscore_mult_append = " Blind Req.",
-			felijo_combine_button = "COMBINE",
-			felijo_separate_button = "SEPARATE",
-			felijo_separate_button = "SWITCH",
+			k_felijo_combine_button = "COMBINE",
+			k_felijo_separate_button = "SEPARATE",
+			k_felijo_switch_button = "SWITCH",
 			
 			
 		},

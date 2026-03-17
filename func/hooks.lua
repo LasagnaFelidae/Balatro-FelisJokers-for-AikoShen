@@ -17,6 +17,22 @@ function CardArea:emplace(card, location, stay_flipped)
     CardAreaold(self, card, location, stay_flipped)
 end
 
+local end_round_old = end_round
+function end_round()
+	G.E_MANAGER:add_event(Event({
+      trigger = 'after',
+      delay = 0.2,
+      func = function()
+            if FELIJO.active_totem == nil then
+				FELIJO.removeTotemSigils()
+			end
+		return true
+	end
+	}))
+	return end_round_old()
+end
+
+
 local old_set_debuff = Card.set_debuff
 function Card:set_debuff(should_debuff)
     old_set_debuff(self, should_debuff)

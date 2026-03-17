@@ -9,6 +9,7 @@ FELIJO.TotemSigil = SMODS.Sticker:extend{
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_undying",
+	atlas = "inscryptionTotemSigils",
     pos = {x = 0, y = 0},
     badge_colour = HEX('BD894B'),
 	no_collection = true,
@@ -53,7 +54,7 @@ FELIJO.TotemSigil {
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_swap",
-    
+    atlas = "inscryptionTotemSigils",
     pos = {x = 1, y = 0},
     badge_colour = HEX('BD894B'),
 	no_collection = true,
@@ -69,13 +70,12 @@ FELIJO.TotemSigil {
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_bifurcated",
-    
+    atlas = "inscryptionTotemSigils",
     pos = {x = 2, y = 0},
     badge_colour = HEX('BD894B'),
 	no_collection = true,
     calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card == card then
-			print("retrigger")
 			return{
 				repetitions = 1,
 			}
@@ -85,7 +85,8 @@ FELIJO.TotemSigil {
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_midas",
-config = { extra = { dollars = 1 } },
+	atlas = "inscryptionTotemSigils",
+	config = { extra = { dollars = 1 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = {self.config.extra.dollars} }
     end,
@@ -102,7 +103,7 @@ config = { extra = { dollars = 1 } },
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_cardbearer",
-    
+    atlas = "inscryptionTotemSigils",
     pos = {x = 8, y = 0},
     badge_colour = HEX('BD894B'),
 	no_collection = true,
@@ -118,7 +119,7 @@ FELIJO.TotemSigil {
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_omnistrike",
-    
+    atlas = "inscryptionTotemSigils",
     pos = {x = 5, y = 0},
     badge_colour = HEX('BD894B'),
 	no_collection = true,
@@ -136,7 +137,7 @@ FELIJO.TotemSigil {
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_repulsive",
-    
+    atlas = "inscryptionTotemSigils",
     pos = {x = 6, y = 0},
     badge_colour = HEX('BD894B'),
 	no_collection = true,
@@ -146,7 +147,8 @@ FELIJO.TotemSigil {
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_stinky",
-config = { extra = { xbscore = 0.20 } },
+	atlas = "inscryptionTotemSigils",
+	config = { extra = { xbscore = 0.20 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = {self.config.extra.xbscore*100} }
     end,
@@ -176,7 +178,7 @@ config = { extra = { xbscore = 0.20 } },
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_giftbearer",
-    
+    atlas = "inscryptionTotemSigils",
     pos = {x = 4, y = 0},
     badge_colour = HEX('BD894B'),
 	no_collection = true,
@@ -194,6 +196,7 @@ FELIJO.TotemSigil {
 
 FELIJO.TotemSigil {
     key = "felijo_ttm_sgl_leader",
+	atlas = "inscryptionTotemSigils",
 	config = {extra = { mult = 0, mult_mod = 5}},
 	loc_vars = function(self, info_queue, card)
 		local my_pos = nil
@@ -217,7 +220,7 @@ FELIJO.TotemSigil {
 	no_collection = true,
     calculate = function(self, card, context)
 		if context.joker_main and not context.blueprint then
-			self.ability.extra.mult = 0
+			self.config.extra.mult = 0
 			local my_pos = nil
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i] == card then

@@ -230,7 +230,6 @@ function Card:highlight(is_highlighted)
 	elseif self.highlighted and self.ability and self.ability.is_totem_head then
 		FELIJO.highlighted_head = self
 	end
-
 	if self.highlighted and (G.pack_cards and self.area == G.pack_cards and self.ability.set == "felijo_totem_parts") then
 		if self.children.use_button then
 			self.children.use_button:remove()
@@ -257,24 +256,25 @@ function Card:highlight(is_highlighted)
 					y = 1.5,
 				},
 				parent = self,
+				ref_table = s,
 			},
 		})
-	elseif self.highlighted and self.ability and self.ability.is_totem_body and self.area and self.area == G.felijo_totems then
+	elseif self.highlighted and self.ability and self.ability.is_totem_head and self.area and self.area == G.felijo_totems then
 		if self.children.use_button then
 			self.children.use_button:remove()
 			self.children.use_button = nil
 		end
-
+		
 		self.children.use_button = UIBox({
 			definition = FELIJO.button_func(self, {
 				sell = true,
-				use = true,
-				text = localize("felijo_combine_button"),                           
-				button = "felijo_totem_button",  
-				func = "felijo_combine_totem",
+				use = nil,
+				text = localize("k_felijo_combine_button"),                           
+				button = nil,  
+				func = "felijo_totem_button",
 				one_press = true,
 				text_colour = G.C.WHITE,
-				colour = G.C.BLUE,  
+				colour = G.C.UI.BACKGROUND_INACTIVE,  
 				text_scale = 0.45,
 				align_text = "cm",
 			}),
@@ -285,6 +285,37 @@ function Card:highlight(is_highlighted)
 					y = 0,
 				},
 				parent = self,
+				ref_table = self,
+			},
+		})
+		
+	elseif self.highlighted and self.ability and self.ability.is_totem_body and self.area and self.area == G.felijo_totems then
+		if self.children.use_button then
+			self.children.use_button:remove()
+			self.children.use_button = nil
+		end
+
+		self.children.use_button = UIBox({
+			definition = FELIJO.button_func(self, {
+				sell = true,
+				use = true,
+				text = localize("k_felijo_combine_button"),                           
+				button = "felijo_combine_totem",  
+				func = "felijo_totem_button",
+				one_press = false,
+				text_colour = G.C.WHITE,
+				colour = G.C.UI.BACKGROUND_INACTIVE,  
+				text_scale = 0.45,
+				align_text = "cm",
+			}),
+			config = {
+				align = "cr",
+				offset = {
+					x = -0.4,
+					y = 0,
+				},
+				parent = self,
+				ref_table = self,
 			},
 		})
 	else

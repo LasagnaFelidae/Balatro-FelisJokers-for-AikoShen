@@ -52,7 +52,7 @@ FELIJO.removeTotemSigils = function()
         if card.ability then
             for _, sigil_data in ipairs(FELIJO.totem_sigil_table) do
                 local sticker_key = sigil_data.key
-                if card:has_sticker(sticker_key) then
+                if card.ability[sticker_key] then
                     card:remove_sticker(sticker_key, true)
                 end
             end
@@ -62,17 +62,22 @@ end
 
 FELIJO.applyTotemSigils = function(totem_body, tribe)
     if not totem_body then return end
-    if not totem_body.config.totem_sigil then return end
-	if not tribe or totem_body.config.totem_tribe then return end
+    if not totem_body.ability.totem_sigil then return end
     if not G.jokers or not G.jokers.cards then return end
 
-    local sigil_key = totem_body.config.totem_sigil
-
+    local sigil_key = totem_body.ability.totem_sigil
+	local applied = false
     for _, card in ipairs(G.jokers.cards) do
-		if card.ability and card.config and card.config.center and card.config.center.pools then
-			if card.config.center.pools[tribe] and not card:has_sticker(sigil_key) then
-				card:add_sticker(sigil_key, true)
-			end
-		end
+        
+
+        if card.ability and card.config and card.config.center and card.config.center.pools then
+            if card.config.center.pools[tribe] and not card.ability.sigil_key then
+                card:add_sticker(sigil_key, true)
+                applied = true
+            end
+        end
+    end
+	if applied then
+        play_sound("felijo_totem_activate",1)
     end
 end

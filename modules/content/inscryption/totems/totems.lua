@@ -1,9 +1,44 @@
 FELIJO.highlighted_head = FELIJO.highlighted_head or nil
 FELIJO.active_totem = FELIJO.active_totem or nil
 
+G.FUNCS.felijo_totem_button = function(e)
+	if G.felijo_totems then
+		local card = e.config.ref_table
+		local highlighted_head = FELIJO.highlighted_head or nil
+		if card.ability.totem_active then
+			if highlighted_head then
+				if highlighted_head.ability.tribe ~= card.ability.totem_tribe then
+					-- SWITCH
+					e.config.text = localize("k_felijo_switch_button")
+					e.config.button = "felijo_combine_totem"
+					e.config.colour = G.C.BLUE
+				else
+					e.config.text = localize("felijo_switch_button")
+					e.config.button = nil
+					e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				end
+			else
+				e.config.text = localize("k_felijo_separate_button")
+				e.config.button = "felijo_separate_totem"
+				e.config.colour = G.C.RED
+			end
+		else
+			if highlighted_head and FELIJO.active_totem == nil then
+				e.config.text = localize("k_felijo_combine_button")
+				e.config.button = "felijo_combine_totem"
+				e.config.colour = G.C.BLUE
+			else
+				e.config.text = localize("k_felijo_combine_button")
+				e.config.button = nil
+				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+			end
+		end
+	end
+end
+
 G.FUNCS.felijo_can_pull = function(e)
     local card = e.config.ref_table
-    if #G.felijo_totems < G.felijo_totems.config.card_limit and card.set == "felijo_totem_parts" then
+    if #G.felijo_totems < G.felijo_totems.config.card_limit then
         e.config.colour = G.C.PURPLE
         e.config.button = "pull_card"
     else
@@ -11,17 +46,18 @@ G.FUNCS.felijo_can_pull = function(e)
         e.config.button = nil
     end
 end
+
 G.FUNCS.felijo_pull = function(e)
     local card = e.config.ref_table
     card.area:remove_card(card)
     card:add_to_deck()
-    G.consumeables:emplace(card)
+    G.felijo_totems:emplace(card)
 end
+
 G.FUNCS.felijo_separate_totem = function(e)
     local body_card = e.config.ref_table
     if not body_card then return end
     if not body_card.ability.totem_active then return end
-    if FELIJO.active_totem ~= body_card then return end
 
     local tribe = body_card.ability.totem_tribe
     if tribe then
@@ -34,75 +70,107 @@ G.FUNCS.felijo_separate_totem = function(e)
 
     FELIJO.removeTotemSigils()
 
-	body_card.children.center:set_sprite_pos({x = body_card.children.center.pos.x, y = 3})
-	body_card.children.center:set_soul_pos({x = body_card.children.center.soul_pos.x, y = 5})
-
+	body_card.children.center:set_sprite_pos({x = body_card.children.center.sprite_pos.x, y = 3})
+	body_card.ability.sprite_pos ={
+        x = body_card.children.center.sprite_pos.x,
+        y = 3
+    }
+	
+            
+	--[[
+	body_card.config.center.soul_pos = {x = body_card.config.center.soul_pos.x, y = 5}
+	body_card.ability.soul_pos ={
+        x = body_card.config.center.soul_pos.x,
+        y = 5
+    }
+	body_card:set_sprites(body_card.config.center)
+	]]
     body_card.ability.totem_active = false
     body_card.ability.totem_tribe = nil
 
     FELIJO.active_totem = nil
+	play_sound("felijo_totem_separate",1)
 end
 
 G.FUNCS.felijo_combine_totem = function(e)
     local body_card = e.config.ref_table
     if not body_card then return end
     if not FELIJO.highlighted_head then return end
-    local head = FELIJO.highlighted_head
 
+    local head = FELIJO.highlighted_head
 
     if not body_card.ability.is_totem_body then return end
 
     local active_totem = FELIJO.active_totem
 
     -- SWITCH
-    if active_totem == body_card then
+    if body_card.ability.totem_active then
         if head.ability.tribe ~= body_card.ability.totem_tribe then
-			
             local old_tribe = body_card.ability.totem_tribe
-			local old_tribe_data = FELIJO.indexTribe(old_tribe)
-			local old_tribe_key = "c_felijo_" .. old_tribe_data.totem_key
-			
+            local old_tribe_data = FELIJO.indexTribe(old_tribe)
+            local old_tribe_key = "c_felijo_" .. old_tribe_data.totem_key
+
             SMODS.destroy_cards(head, nil, nil, true)
             FELIJO.highlighted_head = nil
-			
-			SMODS.add_card{ key = old_tribe_key, area = G.felijo_totems }
+
+            SMODS.add_card{ key = old_tribe_key, area = G.felijo_totems }
 
             FELIJO.removeTotemSigils()
 
             body_card.ability.totem_tribe = head.ability.tribe
-            local tribe_data = felijo.indexTribe(head.ability.tribe)
-            if tribe_data then
-				body_card.children.center:set_soul_pos({x = tribe_data.totem_x, y = 1})
-            end
+
+            local tribe_data = FELIJO.indexTribe(head.ability.tribe)
+            --[[if tribe_data then
+                body_card.config.center.soul_pos = {
+                    x = tribe_data.totem_x,
+                    y = 1
+                }
+                body_card.ability.soul_pos = {
+                    x = tribe_data.totem_x,
+                    y = 1
+                }
+                body_card:set_sprites(body_card.config.center)
+            end]]
 
             FELIJO.applyTotemSigils(body_card, body_card.ability.totem_tribe)
-
+			play_sound("felijo_totem_switch",1)
         end
-        return
     end
 
-    -- SEPARATE ACTIVE TOTEM IF EXISTS AND IS NOT SELECTED BODY
-    if active_totem and active_totem ~= body_card then
-        G.FUNCS.felijo_separate_totem(active_totem)
-    end
 
     -- COMBINE
-    body_card.config.totem_tribe = head.config.tribe
-    body_card.config.totem_active = true
-	body_card.children.center:set_sprite_pos({x = body_card.children.center.pos.x, y = 3})
+    body_card.ability.totem_tribe = head.ability.tribe
+    body_card.ability.totem_active = true
 
-    local tribe_data = FELIJO.indexTribe(head.config.tribe)
+    body_card.children.center:set_sprite_pos({
+        x = body_card.children.center.sprite_pos.x,
+        y = 2
+    })
+    body_card.ability.sprite_pos = {
+        x = body_card.children.center.sprite_pos.x,
+        y = 2
+    }
+
+    local tribe_data = FELIJO.indexTribe(head.ability.tribe)
+	--[[
     if tribe_data then
-        body_card.soul_pos = {x = tribe_data.totem_x, y = 1}
+        body_card.config.center.soul_pos = {
+            x = tribe_data.totem_x,
+            y = 1
+        }
+        body_card.ability.soul_pos = {
+            x = tribe_data.totem_x,
+            y = 1
+        }
+        body_card:set_sprites(body_card.config.center)
     end
-
+	]]
     SMODS.destroy_cards(head, nil, nil, true)
     FELIJO.highlighted_head = nil
 
     FELIJO.active_totem = body_card
-
-    FELIJO.applyTotemSigils(body_card, body_card.config.totem_tribe)
-
+    FELIJO.applyTotemSigils(body_card, body_card.ability.totem_tribe)
+	play_sound("felijo_totem_combine",1)
 end
 
 FELIJO.Consumable = SMODS.Consumable:extend{
@@ -126,12 +194,12 @@ SMODS.ConsumableType {
 }
 
 local retvars_lookup = {
-    felijo_ttm_sgl_midas     = { SMODS.Stickers["felijo_ttm_sgl_midas"]     and SMODS.Stickers["felijo_ttm_sgl_midas"].config.val1 },
+    felijo_ttm_sgl_midas     = { SMODS.Stickers["felijo_ttm_sgl_midas"]     and SMODS.Stickers["felijo_ttm_sgl_midas"].config.extra.dollars },
     felijo_ttm_sgl_leader    = SMODS.Stickers["felijo_ttm_sgl_leader"] and {
-        SMODS.Stickers["felijo_ttm_sgl_leader"].config.val1,
-        SMODS.Stickers["felijo_ttm_sgl_leader"].config.val2
+        SMODS.Stickers["felijo_ttm_sgl_leader"].config.extra.mult_mod,
+        0
     },
-    felijo_ttm_sgl_stinky    = SMODS.Stickers["felijo_ttm_sgl_stinky"] and { SMODS.Stickers["felijo_ttm_sgl_stinky"].config.val1 },
+    felijo_ttm_sgl_stinky    = SMODS.Stickers["felijo_ttm_sgl_stinky"] and { SMODS.Stickers["felijo_ttm_sgl_stinky"].config.extra.xbscore*100 },
 }
 
 for _, data in ipairs(FELIJO.totem_sigil_table) do
@@ -142,21 +210,26 @@ for _, data in ipairs(FELIJO.totem_sigil_table) do
 			is_totem_body 	= true,
             totem_sigil 	= data.key,   
             totem_active    = false,               
-            totem_tribe     = nil,                 
+            totem_tribe     = nil,
+			sprite_pos = {x = data.totem_x, y = 3},
+			soul_pos = {x = data.totem_x, y = 5},
         },
         atlas = "inscryptionTotems",
         pos = {x = data.totem_x, y = 3},
-		soul_pos = {x = data.totem_x, y = 5},
+		soul_pos = {x = data.totem_x, y = 5, draw = function (card, scale_mod, rotate_mod)
+            card.children.floating_sprite:draw_shader('dissolve',0, nil, nil, card.children.center,scale_mod, rotate_mod,0,-100,nil, 0.2)
+            card.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, card.children.center, scale_mod, rotate_mod,0,0-0.2)
+        end},
         cost = data.cost,
 		unlocked = true,
 		discovered = true,
 		loc_vars = function(self, info_queue, card)
-			local tribe_name = card.config.totem_tribe
-			local sigil = card.config.totem_sigil
-			local display = tribe_name and localize { type = 'name_text', set = 'felijo_totem_parts', key = tribe_name } or localize('k_none')
-			local colour = tribe_name and HEX('757CDC') or G.C.UI.TEXT_INACTIVE
+			local tribe_name = card.ability.totem_tribe
+			local sigil = card.ability.totem_sigil
+			local display = tribe_name and tribe_name or localize('k_none')
+			local colour = tribe_name and G.C.FILTER or G.C.UI.TEXT_INACTIVE
 
-			if card.config.totem_sigil then
+			if card.ability.totem_sigil then
 				local retvars = retvars_lookup[sigil] or {}
 				info_queue[#info_queue + 1] = { key = sigil, set = "Other", vars = retvars }
 			end
@@ -179,18 +252,62 @@ for _, data in ipairs(FELIJO.totem_sigil_table) do
 
 			return { vars = { display }, main_end = main_end }
 		end,
+		load = function (self,card)
+			G.E_MANAGER:add_event(Event({
+				func = function() 
+						card.children.center:set_sprite_pos({
+							x = card.ability.sprite_pos.x,
+							y = card.ability.sprite_pos.y,
+						})
+						--[[card.config.center.soul_pos = {
+							x = card.ability.soul_pos.x,
+							y = card.ability.soul_pos.y
+						}
+						card:set_sprites(card.config.center)
+						]]
+					return true 
+				end
+			}))
+		end,
         can_use = function(self, card)
 		
         end,
         use = function(self, card, area, copier)
 
         end,
-        
+        remove_from_deck = function(self,card,from_debuff)
+			if card.ability.totem_active and not from_debuff then
+				local old_tribe = card.ability.totem_tribe
+				local old_tribe_data = FELIJO.indexTribe(old_tribe)
+				local old_tribe_key = "c_felijo_" .. old_tribe_data.totem_key
+				SMODS.add_card{ key = old_tribe_key, area = G.felijo_totems }
+				FELIJO.removeTotemSigils()
+				FELIJO.active_totem = nil
+			elseif card.ability.totem_active and from_debuff then
+				FELIJO.removeTotemSigils()
+			end
+		end,
+		add_to_deck = function(self,card,from_debuff)
+			if card.ability.totem_active and from_debuff then 
+				FELIJO.applyTotemSigils(card, card.ability.totem_tribe)
+			elseif not card.ability.totem_active and not from_debuff then
+				play_sound('felijo_totem_add', 1)	
+			end
+		end,
+		calculate = function(self,card,context) 
+			if context.selling_self and card.ability.totem_active then
+				local old_tribe = card.ability.totem_tribe
+				local old_tribe_data = FELIJO.indexTribe(old_tribe)
+				local old_tribe_key = "c_felijo_" .. old_tribe_data.totem_key
+				SMODS.add_card{ key = old_tribe_key, area = G.felijo_totems }
+				FELIJO.removeTotemSigils()
+			end
+		end,
     }
 end
 
 for _, data in ipairs(FELIJO.tribe_table) do
-    SMODS.Consumable {
+    FELIJO.Consumable {
         key = "felijo_" .. data.totem_key,
         set = "felijo_totem_parts",
         config = {
@@ -214,52 +331,3 @@ end
 
 
 
-G.FUNCS.felijo_totem_button = function(e)
-	if G.felijo_totems then
-		e.config.button = "felijo_totem_button"
-		
-		local card = e.config.ref_table
-		local highlighted_head = FELIJO.highlighted_head or nil
-		local active_totem = FELIJO.active_totem or nil
-		
-		if card.config.totem_active == true 
-		and active_totem and active_totem == card 
-		and highlighted_head and highlighted_head.config.tribe ~= card.config.totem_tribe then
-			e.config.text = localize("felijo_switch_button")
-			e.config.button = "felijo_combine_totem"
-			e.config.colour = G.C.BLUE
-			
-		elseif card.config.totem_active == true 
-		and active_totem and active_totem == card 
-		and highlighted_head and highlighted_head.config.tribe == card.config.totem_tribe then
-			e.config.text = localize("felijo_switch_button")
-			e.config.button = nil
-			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-			
-		elseif card.config.totem_active == true 
-		and active_totem and active_totem == card 
-		and highlighted_head == nil then
-			e.config.text = localize("felijo_switch_button")
-			e.config.button = nil
-			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-			
-		elseif card.config.totem_active == true 
-		and active_totem and active_totem == card then
-			e.config.text = localize("felijo_separate_button")
-			e.config.button = "felijo_separate_totem"
-			e.config.colour = G.C.RED
-			
-		elseif card.config.totem_active == false 
-		and highlighted_head then
-			e.config.text = localize("felijo_combine_button")
-			e.config.button = "felijo_combine_totem"
-			e.config.colour = G.C.BLUE
-			
-		elseif card.config.totem_active == false 
-		and highlighted_head == nil then
-			e.config.text = localize("felijo_combine_button")
-			e.config.button = nil
-			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-		end
-	end
-end
