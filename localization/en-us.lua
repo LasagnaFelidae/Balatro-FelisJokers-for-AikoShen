@@ -36,7 +36,7 @@ return {
             m_felijo_glass_t2 = {
                 name = "Glass Card [II]",
                 text = {
-                    "{X:mult,C:white} X#1# {} Mult",
+                    "{X:mult,C:white}X#1#{} Mult",
                     "{C:green}#2# in #3#{} chance to",
                     "destroy card",
                 },
@@ -365,7 +365,7 @@ return {
 			v_felijo_beartrap = {
 				name = "Bear Trap",
 				text = {
-				"Unlocks the ability to have {C:money}Pelts{}."
+				"Adds {C:money}Pelts{} to booster packs and shops."
 				},
 			
 			
